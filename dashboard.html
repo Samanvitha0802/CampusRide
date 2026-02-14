@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusRide Dashboard</title>
+
+<style>
+
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: 
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("https://startaride.com/wp-content/uploads/2024/05/1_n-6mh-5LUdlePB0H1u776Q.jpg") no-repeat center center/cover;
+    z-index: -2;
+}
+
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 80px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+}
+
+.navbar ul li a.active {
+    border-bottom: 2px solid white;
+}
+
+/* ===== WELCOME ===== */
+.welcome {
+    text-align: center;
+    margin: 50px 0 30px 0;
+}
+
+.welcome h1 {
+    font-size: 28px;
+    color: #1e3a8a;
+}
+
+.welcome p {
+    font-size: 15px;
+    color: #6c757d;
+}
+
+/* ===== GRID ===== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 120px;
+    padding: 60px 150px;
+}
+
+/* LEFT */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: flex-end;
+}
+
+/* CENTER */
+.center-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    margin-top: 90px;
+}
+
+/* RIGHT */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* ===== CARD BASE ===== */
+.card,
+.stat-card {
+    position: relative;
+    width: 340px;
+    background: white;
+    border-radius: 35px;
+    padding: 40px;
+    text-align: center;
+    z-index: 1;
+}
+
+/* ===== BLUE BORDER (MODULE CARDS) ===== */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 4px;
+    border-radius: 35px;
+    background: linear-gradient(45deg, #60a5fa, #1e3a8a, #60a5fa);
+    background-size: 300% 300%;
+    animation: blueBorder 5s linear infinite;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    z-index: -1;
+}
+
+/* ===== RED BORDER (STAT CARDS) ===== */
+.stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 4px;
+    border-radius: 35px;
+    background: linear-gradient(45deg, #60a5fa, #1e3a8a,  #60a5fa);
+    background-size: 300% 300%;
+    animation: redBorder 5s linear infinite;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    z-index: -1;
+}
+
+@keyframes blueBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes redBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== CONTENT ===== */
+.card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #1e3a8a;
+}
+
+.card p {
+    font-size: 15px;
+    margin-bottom: 25px;
+    color: #6c757d;
+}
+
+.card button {
+    padding: 12px 26px;
+    border-radius: 25px;
+    border: none;
+    background-color: #1e3a8a;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.stat-card h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #8b0000;
+}
+
+.stat-card p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 30px;
+    }
+
+    .left-column,
+    .right-column {
+        align-items: center;
+    }
+
+    .center-stats {
+        margin-top: 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">CampusRide</div>
+    <nav>
+        <ul>
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">My Trips</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="welcome">
+    <h1>Welcome Back</h1>
+    <p>Your smart vehicle pooling system for a greener campus.</p>
+</section>
+
+<section class="dashboard-grid">
+
+    <div class="left-column">
+        <div class="card">
+            <h3>Vehicle Registration</h3>
+            <p>Register your vehicle to start offering rides.</p>
+            <button>Register Vehicle</button>
+        </div>
+
+        <div class="card">
+            <h3>Offer Ride</h3>
+            <p>Create a ride and share your journey.</p>
+            <button>Offer Ride</button>
+        </div>
+    </div>
+
+    <div class="center-stats">
+        <div class="stat-card">
+            <h2>12</h2>
+            <p>Active Rides</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>34</h2>
+            <p>Registered Vehicles</p>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card">
+            <h3>Request Ride</h3>
+            <p>Search and join available rides.</p>
+            <button>Request Ride</button>
+        </div>
+
+        <div class="card">
+            <h3>Registration Status</h3>
+            <p>Track your vehicle approval and ride history.</p>
+            <button>View Status</button>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>
