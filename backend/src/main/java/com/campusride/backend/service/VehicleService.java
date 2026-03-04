@@ -18,13 +18,13 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    private final String uploadDir = "C:/Users/dilee/OneDrive/Desktop/Mini-Project/CampusRide/backend/uploads/";
+    private final String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
 
 
     private String saveFile(MultipartFile file, String folder) throws IOException {
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String folderPath = uploadDir + folder + "/";
+        String folderPath = uploadDir + folder + File.separator;
 
         // Create folder if it doesn't exist
         File directory = new File(folderPath);
