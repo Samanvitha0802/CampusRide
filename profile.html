@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusRide Profile</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #e3ebf5);
+    color: #2c3e50;
+}
+
+.container {
+    width: 85%;
+    margin: 40px auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid #4a90e2;
+    object-fit: cover;
+}
+
+.profile-details h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.profile-details p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.logout-btn {
+    margin-left: auto;
+    padding: 10px 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background: #c0392b;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    border-left: 4px solid #4a90e2;
+    padding-left: 10px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #4a90e2;
+    color: white;
+    padding: 14px;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f8fbff;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.approved {
+    background: #d4edda;
+    color: #2e7d32;
+}
+
+.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+@media (max-width: 768px) {
+    .profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logout-btn {
+        margin: 15px 0 0 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PROFILE -->
+    <div class="card profile">
+        <img src="https://via.placeholder.com/130" alt="Profile">
+
+        <div class="profile-details">
+            <h2 id="name">Loading...</h2>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Phone:</strong> <span id="phone"></span></p>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- VEHICLES -->
+    <div class="card">
+        <div class="section-title">🚗 Registered Vehicles</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Vehicle Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="vehicleTable"></tbody>
+        </table>
+    </div>
+
+    <!-- RIDES OFFERED -->
+    <div class="card">
+        <div class="section-title">📤 Rides Offered</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pickup</th>
+                    <th>Destination</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="offeredTable"></tbody>
+        </table>
+    </div>
+
+    <!-- RIDES USED -->
+    <div class="card">
+        <div class="section-title">📥 Rides Used</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pickup</th>
+                    <th>Destination</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="usedTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+    }
+
+    fetch(`http://localhost:8081/api/dashboard/${email}`)
+    .then(res => res.json())
+    .then(data => {
+
+        // PROFILE
+        document.getElementById("name").innerText = data.name;
+        document.getElementById("email").innerText = data.email;
+        document.getElementById("phone").innerText = data.phone;
+
+        // VEHICLES
+        const vTable = document.getElementById("vehicleTable");
+        vTable.innerHTML = "";
+
+        if (data.vehicles.length === 0) {
+            vTable.innerHTML = "<tr><td colspan='3'>No vehicles registered</td></tr>";
+        } else {
+            data.vehicles.forEach(v => {
+                vTable.innerHTML += `
+                    <tr>
+                        <td>${v.type}</td>
+                        <td>${v.number}</td>
+                        <td>
+                            <span class="badge ${v.approved ? 'approved' : 'pending'}">
+                                ${v.approved ? 'Approved' : 'Pending'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // RIDES OFFERED
+        const oTable = document.getElementById("offeredTable");
+        oTable.innerHTML = "";
+
+        if (data.ridesOffered.length === 0) {
+            oTable.innerHTML = "<tr><td colspan='3'>No rides offered</td></tr>";
+        } else {
+            data.ridesOffered.forEach(r => {
+                oTable.innerHTML += `
+                    <tr>
+                        <td>${r.pickup}</td>
+                        <td>${r.destination}</td>
+                        <td>${r.time}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // RIDES USED
+        const uTable = document.getElementById("usedTable");
+        uTable.innerHTML = "";
+
+        if (data.ridesUsed.length === 0) {
+            uTable.innerHTML = "<tr><td colspan='3'>No rides used</td></tr>";
+        } else {
+            data.ridesUsed.forEach(r => {
+                uTable.innerHTML += `
+                    <tr>
+                        <td>${r.pickup}</td>
+                        <td>${r.destination}</td>
+                        <td>${r.time}</td>
+                    </tr>
+                `;
+            });
+        }
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error loading profile");
+    });
+
+});
+
+// LOGOUT
+function logout() {
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
