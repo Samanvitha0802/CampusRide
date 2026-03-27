@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <title>CampusRide Profile</title>
@@ -11,17 +12,60 @@
     box-sizing: border-box;
 }
 
+/* ===== BODY ===== */
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #eef2f7, #e3ebf5);
     color: #2c3e50;
+    padding-top: 90px; /* space for navbar */
 }
 
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 80px;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar button {
+    background-color: white;
+    color: #1e3a8a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* ===== CONTAINER ===== */
 .container {
     width: 85%;
     margin: 40px auto;
 }
 
+/* ===== CARD ===== */
 .card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 16px;
@@ -30,6 +74,7 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
+/* ===== PROFILE ===== */
 .profile {
     display: flex;
     align-items: center;
@@ -41,18 +86,10 @@ body {
     height: 130px;
     border-radius: 50%;
     border: 4px solid #4a90e2;
-    object-fit: cover;
 }
 
 .profile-details h2 {
     font-size: 26px;
-    margin-bottom: 8px;
-}
-
-.profile-details p {
-    margin: 6px 0;
-    font-size: 14px;
-    color: #555;
 }
 
 .logout-btn {
@@ -62,23 +99,12 @@ body {
     color: white;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
 }
 
-.logout-btn:hover {
-    background: #c0392b;
-}
-
+/* ===== TABLE ===== */
 .section-title {
     font-size: 18px;
-    font-weight: 600;
     margin-bottom: 15px;
-    border-left: 4px solid #4a90e2;
-    padding-left: 10px;
-}
-
-.table-container {
-    overflow-x: auto;
 }
 
 table {
@@ -98,55 +124,42 @@ td {
     text-align: center;
 }
 
-tr:hover {
-    background: #f8fbff;
-}
-
+/* ===== STATUS ===== */
 .badge {
     padding: 6px 12px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
 }
 
-.approved {
-    background: #d4edda;
-    color: #2e7d32;
-}
-
-.pending {
-    background: #fff3cd;
-    color: #856404;
-}
-
-@media (max-width: 768px) {
-    .profile {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .logout-btn {
-        margin: 15px 0 0 0;
-    }
-}
+.approved { background: #d4edda; color: #2e7d32; }
+.pending { background: #fff3cd; color: #856404; }
+.rejected { background: #f8d7da; color: #721c24; }
 </style>
 </head>
 
 <body>
 
+<!-- ✅ NAVBAR -->
+<header class="navbar">
+    <div class="logo">CampusRide</div>
+    <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="#">My Trips</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><button onclick="logout()">Logout</button></li>
+    </ul>
+</header>
+
 <div class="container">
 
     <!-- PROFILE -->
     <div class="card profile">
-        <img src="https://via.placeholder.com/130" alt="Profile">
+        <img src="https://via.placeholder.com/130">
 
         <div class="profile-details">
             <h2 id="name">Loading...</h2>
-            <p><strong>Email:</strong> <span id="email"></span></p>
-            <p><strong>Phone:</strong> <span id="phone"></span></p>
+            <p>Email: <span id="email"></span></p>
+            <p>Phone: <span id="phone"></span></p>
         </div>
-
-        <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
 
     <!-- VEHICLES -->
@@ -197,13 +210,12 @@ tr:hover {
 </div>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", () => {
 
     const email = localStorage.getItem("email");
 
     if (!email) {
-        alert("Please login first");
+        alert("Login required");
         window.location.href = "login.html";
         return;
     }
@@ -212,34 +224,30 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
 
-        // PROFILE
         document.getElementById("name").innerText = data.name;
         document.getElementById("email").innerText = data.email;
         document.getElementById("phone").innerText = data.phone;
 
-        // VEHICLES
         const vTable = document.getElementById("vehicleTable");
-        vTable.innerHTML = "";
 
         if (data.vehicles.length === 0) {
             vTable.innerHTML = "<tr><td colspan='3'>No vehicles registered</td></tr>";
         } else {
             data.vehicles.forEach(v => {
                 vTable.innerHTML += `
-                    <tr>
-                        <td>${v.type}</td>
-                        <td>${v.number}</td>
-                        <td>
-                            <span class="badge ${v.approved ? 'approved' : 'pending'}">
-                                ${v.approved ? 'Approved' : 'Pending'}
-                            </span>
-                        </td>
-                    </tr>
-                `;
+                <tr>
+                    <td>${v.type}</td>
+                    <td>${v.number}</td>
+                    <td>
+                        <span class="badge ${v.status.toLowerCase()}">
+                            ${v.status}
+                        </span>
+                    </td>
+                </tr>`;
             });
         }
 
-        // RIDES OFFERED
+
         const oTable = document.getElementById("offeredTable");
         oTable.innerHTML = "";
 
@@ -257,8 +265,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // RIDES USED
-        const uTable = document.getElementById("usedTable");
+
+         const uTable = document.getElementById("usedTable");
         uTable.innerHTML = "";
 
         if (data.ridesUsed.length === 0) {
@@ -274,22 +282,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
             });
         }
-
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error loading profile");
     });
-
 });
 
-// LOGOUT
 function logout() {
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
+    localStorage.clear();
     window.location.href = "login.html";
 }
-
 </script>
 
 </body>

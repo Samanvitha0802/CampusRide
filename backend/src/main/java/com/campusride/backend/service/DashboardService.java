@@ -40,7 +40,7 @@ public class DashboardService {
                     VehicleDTO dto = new VehicleDTO();
                     dto.type = v.getVehicleModel();
                     dto.number = v.getVehicleNumber();
-                    dto.approved = v.getStatus().equals("APPROVED");
+                    dto.status = v.getStatus();   // ✅ FIXED HERE
                     return dto;
                 }).toList();
 

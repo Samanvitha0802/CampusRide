@@ -13,16 +13,61 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
+
 body {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+
+    /* keep X center, move down */
+    align-items: flex-start;
+    padding-top: 100px;
+
     background:
         linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
         url("images/offerride.png") no-repeat center center/cover;
 }
 
+/* ===== NAVBAR (FULL WIDTH) ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 80px;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar button {
+    background-color: white;
+    color: #1e3a8a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* ===== FORM CARD ===== */
 .container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
@@ -30,9 +75,9 @@ body {
     border-radius: 15px;
     width: 420px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.3);
 }
 
+/* TEXT */
 h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -54,6 +99,11 @@ input {
     color: white;
 }
 
+input::placeholder {
+    color: #eee;
+}
+
+/* Button */
 button {
     width: 100%;
     padding: 12px;
@@ -61,7 +111,6 @@ button {
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
     cursor: pointer;
 }
 
@@ -81,6 +130,18 @@ button:hover {
 
 <body>
 
+<!-- ✅ FULL WIDTH NAVBAR -->
+<header class="navbar">
+    <div class="logo">CampusRide</div>
+    <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="#">My Trips</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><button onclick="logout()">Logout</button></li>
+    </ul>
+</header>
+
+<!-- ✅ CENTERED CARD -->
 <div class="container">
     <h2>Offer a Ride</h2>
 
@@ -100,7 +161,6 @@ button:hover {
         <label>Seats Available</label>
         <input type="number" id="seats" required>
 
-
         <button type="submit">Offer Ride</button>
     </form>
 
@@ -108,31 +168,32 @@ button:hover {
 </div>
 
 <script>
+function logout(){
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+
 document.getElementById("rideForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
     const email = localStorage.getItem("email");
-
     if(!email){
         alert("Please login first");
         window.location.href = "login.html";
         return;
     }
-
     const rideData = {
         driverEmail: email,
-        source: document.getElementById("source").value,
-        destination: document.getElementById("destination").value,
-        rideDate: document.getElementById("rideDate").value,
-        rideTime: document.getElementById("rideTime").value,
-        seatsAvailable: parseInt(document.getElementById("seats").value)
+        source: source.value,
+        destination: destination.value,
+        rideDate: rideDate.value,
+        rideTime: rideTime.value,
+        seatsAvailable: parseInt(seats.value)
     };
 
     const response = await fetch("http://localhost:8081/api/rides/create", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(rideData)
     });
 

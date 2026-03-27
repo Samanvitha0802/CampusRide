@@ -15,64 +15,97 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ===== BACKGROUND IMAGE ===== */
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1e3a8a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 80px;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar button {
+    background-color: white;
+    color: #1e3a8a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* ===== BODY ===== */
+body {
+    padding-top: 100px; /* space for navbar */
+}
+
+/* ===== BACKGROUND ===== */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: 
+    background:
         linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
         url("images/register.png") no-repeat center center/cover;
     z-index: -1;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-}
-
-/* ===== TITLE SECTION ===== */
+/* ===== TITLE ===== */
 .title-container {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 25px;
     margin-bottom: 25px;
 }
 
 .page-title {
-    font-size: 52px;  /* Bigger text */
+    font-size: 52px;
     font-weight: bold;
     animation: colorChange 4s infinite alternate;
 }
 
-/* Animated color change */
 @keyframes colorChange {
-    0%   { color: #87CEFA; }  /* Light Blue */
-    50%  { color: #ffb6c1; }  /* Light Pink */
-    100% { color: #ff7f7f; }  /* Light Red */
+    0% { color: #87CEFA; }
+    50% { color: #ffb6c1; }
+    100% { color: #ff7f7f; }
 }
 
 .icon {
-    font-size: 70px;   /* Bigger icons */
+    font-size: 70px;
 }
 
-/* ===== GLASS FORM CONTAINER ===== */
+/* ===== CONTAINER ===== */
 .container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     width: 750px;
     padding: 35px;
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.3);
+    margin: auto;
 }
 
-/* ===== FORM GRID ===== */
+/* ===== FORM ===== */
 form {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -83,85 +116,49 @@ form {
     grid-column: span 2;
 }
 
-/* ===== LABEL ===== */
+/* ===== INPUT ===== */
 label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 6px;
     color: white;
+    font-weight: bold;
 }
 
-/* ===== INPUT ===== */
 input, select {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.2);
     color: white;
-    transition: 0.3s;
 }
 
 input::placeholder {
-    color: #eee;
-}
-
-select option {
-    color: black;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: #60a5fa;
-    box-shadow: 0 0 8px rgba(96,165,250,0.7);
-}
-
-input[type="file"] {
-    background: transparent;
+    color: #ffffff;
 }
 
 /* ===== BUTTON ===== */
 button {
     grid-column: span 2;
-    width: 100%;
     padding: 13px;
     background: linear-gradient(45deg, #60a5fa, #1e3a8a);
     color: white;
     border: none;
     border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.4s;
-    margin-top: 10px;
 }
 
-button:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 15px rgba(96,165,250,0.8);
+select {
+    color: white; 
 }
 
-.note {
-    font-size: 12px;
-    color: #f1f1f1;
-    margin-top: 4px;
+select option {
+    color: black;   
+    background: white; 
 }
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .container {
         width: 90%;
     }
-
     form {
         grid-template-columns: 1fr;
-    }
-
-    .full-width {
-        grid-column: span 1;
-    }
-
-    button {
-        grid-column: span 1;
     }
 }
 
@@ -170,73 +167,51 @@ button:hover {
 
 <body>
 
-<!-- ===== TITLE WITH ICONS ===== -->
+<!-- ✅ NAVBAR -->
+<header class="navbar">
+    <div class="logo">CampusRide</div>
+    <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="#">My Trips</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><button onclick="logout()">Logout</button></li>
+    </ul>
+</header>
+
+<!-- TITLE -->
 <div class="title-container">
     <span class="icon">🚗</span>
     <h1 class="page-title">Register Vehicle</h1>
     <span class="icon">🏍️</span>
 </div>
 
-<!-- ===== FORM ===== -->
+<!-- FORM -->
 <div class="container">
     <form id="vehicleForm">
 
-        <div>
-            <label>Name</label>
-            <input type="text" name="name" placeholder="John" required>
-        </div>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="tel" name="mobile" placeholder="Mobile" required>
 
-        <div>
-            <label>Email (College Email Only)</label>
-            <input type="email" name="email" placeholder="example@college.edu" required>
-        </div>
+        <select name="gender">
+            <option>--Select--</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
 
-        <div>
-            <label>Mobile Number</label>
-            <input type="tel" name="mobile" placeholder="9876543210" equired>
-        </div>
+        <input type="file" name="collegeId" class="full-width" required>
+        <input type="file" name="license" class="full-width" required>
+        <input type="file" name="rc" class="full-width" required>
 
-        <div>
-            <label>Gender</label>
-            <select name="gender" required>
-                <option value="">Select</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select>
-        </div>
+        <input type="text" name="vehicleModel" placeholder="Vehicle Model" required>
+        <input type="text" name="vehicleNumber" placeholder="Vehicle Number" required>
 
-        <div class="full-width">
-            <label>College ID</label>
-            <input type="file" name="collegeId" required>
-            <div class="note">Upload clear image of your college ID</div>
-        </div>
-
-        <div class="full-width">
-            <label>Driving License</label>
-            <input type="file" name="license" required>
-        </div>
-
-        <div class="full-width">
-            <label>R.C (Registration Certificate)</label>
-            <input type="file" name="rc" required>
-        </div>
-
-        <div>
-            <label>Vehicle Model</label>
-            <input type="text" name="vehicleModel" placeholder="Splender Plus" required>
-        </div>
-
-        <div>
-            <label>Vehicle Number</label>
-            <input type="text" name="vehicleNumber" placeholder="AP09AB1234" required>
-        </div>
-
-        <button type="submit">Submit for Approval</button>
+        <button type="submit">Submit</button>
 
     </form>
-    <a href="dashboard.html" >back to home</a>
 </div>
+
 <script>
 document.getElementById("vehicleForm").addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -249,14 +224,15 @@ document.getElementById("vehicleForm").addEventListener("submit", async function
     });
 
     if(response.ok){
-        alert("Vehicle submitted for approval!");
-        this.reset();
-    } else {
-        alert("Submission failed");
+        alert("Submitted!");
     }
 });
-</script>
 
+function logout(){
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+</script>
 
 </body>
 </html>

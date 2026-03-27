@@ -4,5 +4,5 @@ public class VehicleDTO {
 
     public String type;
     public String number;
-    public boolean approved;
+    public String status;   // ✅ change here
 }
