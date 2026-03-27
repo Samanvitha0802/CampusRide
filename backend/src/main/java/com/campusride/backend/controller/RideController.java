@@ -1,24 +1,28 @@
 package com.campusride.backend.controller;
 
+import com.campusride.backend.dto.RideRequestDTO;
 import com.campusride.backend.entity.Ride;
 import com.campusride.backend.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rides")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class RideController {
 
     @Autowired
     private RideService rideService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createRide(@RequestBody Ride ride) {
+    public Ride createRide(@RequestBody Ride ride) {
+        return rideService.createRide(ride);
+    }
 
-        Ride savedRide = rideService.createRide(ride);
-
-        return ResponseEntity.ok(savedRide);
+    @GetMapping
+    public List<RideRequestDTO> getAllRides() {
+        return rideService.getAllRideDetails();
     }
 }

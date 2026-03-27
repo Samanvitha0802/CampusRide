@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CampusRide - Rides</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(120deg, #1e3a8a, #3b82f6, #93c5fd);
+    min-height: 100vh;
+}
+
+.tab-header {
+    display: flex;
+    width: 100%;
+}
+
+.tab {
+    width: 50%;
+    text-align: center;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.tab.active {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    width: 80%;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    color: black;
+}
+
+button {
+    padding: 6px 12px;
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background: #162d6b;
+}
+
+input {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 4px;
+    border: none;
+}
+</style>
+
+</head>
+<body>
+
+<div class="tab-header">
+    <div class="tab active" onclick="openTab('requestTab', this)">
+        Request Ride
+    </div>
+    <div class="tab" onclick="openTab('myTab', this)">
+        My Requests
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Available Rides -->
+    <div id="requestTab" class="tab-content active">
+        <h2>Available Rides</h2>
+
+        <input type="text" id="source" placeholder="Source">
+        <input type="text" id="destination" placeholder="Destination">
+        <button onclick="searchRides()">Search</button>
+
+        <div id="ridesContainer"></div>
+    </div>
+
+    <!-- My Requests -->
+    <div id="myTab" class="tab-content">
+        <h2>My Ride Requests</h2>
+        <div id="myRequests"></div>
+    </div>
+
+</div>
+
+<script>
+
+// Switch Tabs
+function openTab(tabId, element) {
+    document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+
+    document.getElementById(tabId).classList.add("active");
+    element.classList.add("active");
+
+    if(tabId === "myTab"){
+        loadMyRequests();
+    }
+}
+
+// Load Available Rides
+async function loadRides() {
+    const res = await fetch("http://localhost:8081/api/rides");
+    const rides = await res.json();
+    displayRides(rides);
+}
+
+// Search Rides
+async function searchRides() {
+    const source = document.getElementById("source").value.toLowerCase();
+    const destination = document.getElementById("destination").value.toLowerCase();
+
+    const res = await fetch("http://localhost:8081/api/rides");
+    const rides = await res.json();
+
+    const filtered = rides.filter(r =>
+        (source === "" || r.source.toLowerCase().includes(source)) &&
+        (destination === "" || r.destination.toLowerCase().includes(destination))
+    );
+
+    displayRides(filtered);
+}
+
+// Display Rides
+function displayRides(rides) {
+    let html = "";
+
+    rides.forEach(r => {
+        html += `
+            <div class="card">
+                <h3>${r.source} → ${r.destination}</h3>
+                <p>Date: ${r.rideDate}</p>
+                <p>Time: ${r.rideTime}</p>
+                <p>Seats Available: ${r.seatsAvailable}</p>
+                <p>Vehicle: ${r.vehicleNumber}</p>
+                <p><b>Driver:</b> ${r.driverName}</p>
+                <p><b>Contact:</b> ${r.driverMobile}</p>
+                <button onclick="requestRide(${r.rideId}, this)">Request Ride</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("ridesContainer").innerHTML = html;
+}
+
+// Request Ride
+async function requestRide(rideId, btn) {
+    const email = localStorage.getItem("email");
+
+    await fetch(
+        `http://localhost:8081/api/ride-request/request?rideId=${rideId}&email=${email}`,
+        { method: "POST" }
+    );
+
+    btn.innerText = "Requested";
+    btn.disabled = true;
+
+    alert("Ride Requested Successfully");
+    loadMyRequests();
+}
+
+// Load My Requests
+async function loadMyRequests() {
+    const email = localStorage.getItem("email");
+
+    const res = await fetch(
+        `http://localhost:8081/api/ride-request/passenger?email=${email}`
+    );
+
+    const requests = await res.json();
+
+    let html = "";
+
+    requests.forEach(r => {
+        let color = "black";
+        if (r.status === "APPROVED") color = "green";
+        if (r.status === "REJECTED") color = "red";
+        if (r.status === "PENDING") color = "orange";
+
+        html += `
+            <div class="card">
+                <h3>${r.source} → ${r.destination}</h3>
+                <p>Date: ${r.rideDate}</p>
+                <p>Time: ${r.rideTime}</p>
+                <p>Seats: ${r.seatsAvailable}</p>
+                <p>Vehicle: ${r.vehicleNumber}</p>
+                <p><b>Driver:</b> ${r.driverName}</p>
+                <p><b>Contact:</b> ${r.driverMobile}</p>
+                <p>Status: <b style="color:${color}">${r.status}</b></p>
+                <p>Ride ID: ${r.rideId}</p>
+            </div>
+        `;
+    });
+
+    document.getElementById("myRequests").innerHTML = html;
+}
+
+// Initial Load
+loadRides();
+
+</script>
+
+</body>
+</html>

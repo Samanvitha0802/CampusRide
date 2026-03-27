@@ -10,82 +10,44 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String driverEmail;
     private String source;
     private String destination;
     private String rideDate;
     private String rideTime;
     private int seatsAvailable;
+
+    private String driverEmail;
+    private String passengerEmail;
+
     private String vehicleNumber;
-    private String status = "ACTIVE";
+    private String status;
 
-    // Getters and Setters
+    public Long getId() { return id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getSource() { return source; }
+    public void setSource(String source) { this.source = source; }
 
-    public String getDriverEmail() {
-        return driverEmail;
-    }
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
 
-    public void setDriverEmail(String driverEmail) {
-        this.driverEmail = driverEmail;
-    }
+    public String getRideDate() { return rideDate; }
+    public void setRideDate(String rideDate) { this.rideDate = rideDate; }
 
-    public String getSource() {
-        return source;
-    }
+    public String getRideTime() { return rideTime; }
+    public void setRideTime(String rideTime) { this.rideTime = rideTime; }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+    public int getSeatsAvailable() { return seatsAvailable; }
+    public void setSeatsAvailable(int seatsAvailable) { this.seatsAvailable = seatsAvailable; }
 
-    public String getDestination() {
-        return destination;
-    }
+    public String getDriverEmail() { return driverEmail; }
+    public void setDriverEmail(String driverEmail) { this.driverEmail = driverEmail; }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
+    public String getPassengerEmail() { return passengerEmail; }
+    public void setPassengerEmail(String passengerEmail) { this.passengerEmail = passengerEmail; }
 
-    public String getRideDate() {
-        return rideDate;
-    }
+    public String getVehicleNumber() { return vehicleNumber; }
+    public void setVehicleNumber(String vehicleNumber) { this.vehicleNumber = vehicleNumber; }
 
-    public void setRideDate(String rideDate) {
-        this.rideDate = rideDate;
-    }
-
-    public String getRideTime() {
-        return rideTime;
-    }
-
-    public void setRideTime(String rideTime) {
-        this.rideTime = rideTime;
-    }
-
-    public int getSeatsAvailable() {
-        return seatsAvailable;
-    }
-
-    public void setSeatsAvailable(int seatsAvailable) {
-        this.seatsAvailable = seatsAvailable;
-    }
-
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
-
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

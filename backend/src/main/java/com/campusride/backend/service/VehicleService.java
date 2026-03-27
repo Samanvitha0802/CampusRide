@@ -1,16 +1,16 @@
 package com.campusride.backend.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-
+import com.campusride.backend.entity.Vehicle;
+import com.campusride.backend.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.campusride.backend.entity.Vehicle;
-import com.campusride.backend.repository.VehicleRepository;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class VehicleService {
@@ -18,53 +18,48 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    private final String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
+    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 
+    // Register vehicle with files
+    public Vehicle registerVehicle(Vehicle vehicle,
+                                   MultipartFile collegeId,
+                                   MultipartFile license,
+                                   MultipartFile rc) throws IOException {
 
-    private String saveFile(MultipartFile file, String folder) throws IOException {
-
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String folderPath = uploadDir + folder + File.separator;
-
-        // Create folder if it doesn't exist
-        File directory = new File(folderPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        File uploadFolder = new File(UPLOAD_DIR);
+        if (!uploadFolder.exists()) {
+            uploadFolder.mkdirs();
         }
 
-        String filePath = folderPath + fileName;
-        File destination = new File(filePath);
+        String collegeIdPath = saveFile(collegeId);
+        String licensePath = saveFile(license);
+        String rcPath = saveFile(rc);
 
-        file.transferTo(destination);
-
-        return "uploads/" + folder + "/" + fileName;
-    }
-
-
-    public Vehicle registerVehicle(
-            Vehicle vehicle,
-            MultipartFile collegeId,
-            MultipartFile license,
-            MultipartFile rc) throws IOException {
-
-        String collegePath = saveFile(collegeId, "college");
-        String licensePath = saveFile(license, "license");
-        String rcPath = saveFile(rc, "rc");
-
-        vehicle.setCollegeIdImage(collegePath);
+        vehicle.setCollegeIdImage(collegeIdPath);
         vehicle.setLicenseImage(licensePath);
         vehicle.setRcImage(rcPath);
         vehicle.setStatus("PENDING");
 
         return vehicleRepository.save(vehicle);
     }
-    
- // Get all pending vehicles
+
+    private String saveFile(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String filePath = UPLOAD_DIR + fileName;
+
+        file.transferTo(new File(filePath));
+
+        return filePath;
+    }
+
     public List<Vehicle> getPendingVehicles() {
         return vehicleRepository.findByStatus("PENDING");
     }
 
-    // Approve vehicle
     public Vehicle approveVehicle(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
@@ -73,7 +68,6 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    // Reject vehicle
     public Vehicle rejectVehicle(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
@@ -81,11 +75,20 @@ public class VehicleService {
         vehicle.setStatus("REJECTED");
         return vehicleRepository.save(vehicle);
     }
-    
-    // Check if user has approved vehicle
+
     public Vehicle getApprovedVehicleByEmail(String email) {
-        return vehicleRepository
-                .findByEmailAndStatus(email, "APPROVED")
-                .orElseThrow(() -> new RuntimeException("Vehicle not verified by admin"));
+        List<Vehicle> vehicles =
+                vehicleRepository.findByEmailAndStatus(email, "APPROVED");
+
+        if (vehicles.isEmpty()) {
+            throw new RuntimeException("No approved vehicle found");
+        }
+
+        return vehicles.get(0);
+    }
+
+    public Vehicle getVehicleByNumber(String vehicleNumber) {
+        return vehicleRepository.findByVehicleNumber(vehicleNumber)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
     }
 }

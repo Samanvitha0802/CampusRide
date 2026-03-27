@@ -13,7 +13,7 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
+
 body {
     height: 100vh;
     display: flex;
@@ -99,7 +99,11 @@ input {
     color: white;
 }
 
-/* BUTTON */
+input::placeholder {
+    color: #eee;
+}
+
+/* Button */
 button {
     width: 100%;
     padding: 12px;
@@ -110,11 +114,16 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background: #163174;
+}
+
 .back {
     display: block;
     margin-top: 15px;
     text-align: center;
-    color: white;
+    color: #ddd;
+    text-decoration: none;
 }
 </style>
 </head>
@@ -168,7 +177,11 @@ document.getElementById("rideForm").addEventListener("submit", async function(e)
     e.preventDefault();
 
     const email = localStorage.getItem("email");
-
+    if(!email){
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+    }
     const rideData = {
         driverEmail: email,
         source: source.value,
@@ -188,7 +201,7 @@ document.getElementById("rideForm").addEventListener("submit", async function(e)
         alert("Ride offered successfully!");
         window.location.href = "dashboard.html";
     } else {
-        alert("Vehicle must be approved first!");
+        alert("Error offering ride.");
     }
 });
 </script>
