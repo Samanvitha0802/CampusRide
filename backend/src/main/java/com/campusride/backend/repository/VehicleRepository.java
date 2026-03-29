@@ -12,7 +12,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     List<Vehicle> findByStatus(String status);
 
     // Get approved vehicle for ride creation
-    Optional<Vehicle> findByEmailAndStatus(String email, String status);
+    List<Vehicle> findByEmailAndStatus(String email, String status);
 
     // ✅ NEW: Get all vehicles of a user (for profile page)
     List<Vehicle> findByEmail(String email);

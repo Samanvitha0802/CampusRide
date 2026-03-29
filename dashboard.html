@@ -26,12 +26,16 @@
 
       /* ===== NAVBAR ===== */
       .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
         background-color: #1e3a8a;
         color: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 16px 80px;
+        z-index: 1000;
       }
 
       .logo {
@@ -48,11 +52,18 @@
       .navbar ul li a {
         text-decoration: none;
         color: white;
-        font-size: 15px;
       }
-
       .navbar ul li a.active {
         border-bottom: 2px solid white;
+      }
+
+      .navbar button {
+        background-color: white;
+        color: #1e3a8a;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        cursor: pointer;
       }
 
       /* ===== WELCOME ===== */
@@ -213,13 +224,11 @@
       <nav>
         <ul>
           <li><a href="#" class="active">Home</a></li>
-          <li><a href="#">My Trips</a></li>
           <li><a href="profile.html">Profile</a></li>
           <li>
             <button
               id="authBtn"
               onclick="handleAuth()"
-              style="background-color: white; color: #1e3a8a; border: none"
             ></button>
           </li>
         </ul>
@@ -289,7 +298,7 @@
 
     function goToRequestRide() {
       if (!checkAuth()) return;
-      window.location.href = "requestride.html";
+      window.location.href = "rides.html";
     }
 
     function goToViewStatus() {

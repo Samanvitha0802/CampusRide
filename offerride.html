@@ -1,210 +1,213 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>CampusRide - Offer Ride</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CampusRide - Offer Ride</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
 
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
+        /* keep X center, move down */
+        align-items: flex-start;
+        padding-top: 100px;
 
-    /* keep X center, move down */
-    align-items: flex-start;
-    padding-top: 100px;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+          url("images/offerride.png") no-repeat center center/cover;
+      }
 
-    background:
-        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-        url("images/offerride.png") no-repeat center center/cover;
-}
+      /* ===== NAVBAR (FULL WIDTH) ===== */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #1e3a8a;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 80px;
+        z-index: 1000;
+      }
 
-/* ===== NAVBAR (FULL WIDTH) ===== */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #1e3a8a;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 80px;
-    z-index: 1000;
-}
+      .logo {
+        font-size: 20px;
+        font-weight: 600;
+      }
 
-.logo {
-    font-size: 20px;
-    font-weight: 600;
-}
+      .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+      }
 
-.navbar ul {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-}
+      .navbar ul li a {
+        text-decoration: none;
+        color: white;
+      }
 
-.navbar ul li a {
-    text-decoration: none;
-    color: white;
-}
+      .navbar button {
+        background-color: white;
+        color: #1e3a8a;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        cursor: pointer;
+      }
 
-.navbar button {
-    background-color: white;
-    color: #1e3a8a;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-}
+      /* ===== FORM CARD ===== */
+      .container {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        padding: 35px;
+        border-radius: 15px;
+        width: 420px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
 
-/* ===== FORM CARD ===== */
-.container {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    padding: 35px;
-    border-radius: 15px;
-    width: 420px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
+      /* TEXT */
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: white;
+      }
 
-/* TEXT */
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: white;
-}
+      label {
+        color: white;
+        font-weight: bold;
+      }
 
-label {
-    color: white;
-    font-weight: bold;
-}
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 15px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.2);
-    color: white;
-}
+      input::placeholder {
+        color: #eee;
+      }
 
-input::placeholder {
-    color: #eee;
-}
+      /* Button */
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #1e3a8a;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-/* Button */
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1e3a8a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
+      button:hover {
+        background: #163174;
+      }
 
-button:hover {
-    background: #163174;
-}
+      .back {
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+        color: #ddd;
+        text-decoration: none;
+      }
+    </style>
+  </head>
 
-.back {
-    display: block;
-    margin-top: 15px;
-    text-align: center;
-    color: #ddd;
-    text-decoration: none;
-}
-</style>
-</head>
-
-<body>
-
-<!-- ✅ FULL WIDTH NAVBAR -->
-<header class="navbar">
-    <div class="logo">CampusRide</div>
-    <ul>
+  <body>
+    <!-- ✅ FULL WIDTH NAVBAR -->
+    <header class="navbar">
+      <div class="logo">CampusRide</div>
+      <ul>
         <li><a href="dashboard.html">Home</a></li>
-        <li><a href="#">My Trips</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><button onclick="logout()">Logout</button></li>
-    </ul>
-</header>
+      </ul>
+    </header>
 
-<!-- ✅ CENTERED CARD -->
-<div class="container">
-    <h2>Offer a Ride</h2>
+    <!-- ✅ CENTERED CARD -->
+    <div class="container">
+      <h2>Offer a Ride</h2>
 
-    <form id="rideForm">
+      <form id="rideForm">
         <label>Source</label>
-        <input type="text" id="source" required>
+        <input type="text" id="source" required />
 
         <label>Destination</label>
-        <input type="text" id="destination" required>
+        <input type="text" id="destination" required />
 
         <label>Date</label>
-        <input type="date" id="rideDate" required>
+        <input type="date" id="rideDate" required />
 
         <label>Time</label>
-        <input type="time" id="rideTime" required>
+        <input type="time" id="rideTime" required />
 
         <label>Seats Available</label>
-        <input type="number" id="seats" required>
+        <input type="number" id="seats" required />
 
         <button type="submit">Offer Ride</button>
-    </form>
+      </form>
 
-    <a href="dashboard.html" class="back">Back to Dashboard</a>
-</div>
+      <a href="dashboard.html" class="back">Back to Dashboard</a>
+    </div>
 
-<script>
-function logout(){
-    localStorage.clear();
-    window.location.href = "login.html";
-}
-
-document.getElementById("rideForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const email = localStorage.getItem("email");
-    if(!email){
-        alert("Please login first");
+    <script>
+      function logout() {
+        localStorage.clear();
         window.location.href = "login.html";
-        return;
-    }
-    const rideData = {
-        driverEmail: email,
-        source: source.value,
-        destination: destination.value,
-        rideDate: rideDate.value,
-        rideTime: rideTime.value,
-        seatsAvailable: parseInt(seats.value)
-    };
+      }
 
-    const response = await fetch("http://localhost:8081/api/rides/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rideData)
-    });
+      document
+        .getElementById("rideForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-    if(response.ok){
-        alert("Ride offered successfully!");
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Error offering ride.");
-    }
-});
-</script>
+          const email = localStorage.getItem("email");
+          if (!email) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+          }
+          const rideData = {
+            driverEmail: email,
+            source: source.value,
+            destination: destination.value,
+            rideDate: rideDate.value,
+            rideTime: rideTime.value,
+            seatsAvailable: parseInt(seats.value),
+          };
 
-</body>
+          const response = await fetch(
+            "http://localhost:8081/api/rides/create",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(rideData),
+            },
+          );
+
+          if (response.ok) {
+            alert("Ride offered successfully!");
+            window.location.href = "dashboard.html";
+          } else {
+            alert(
+              "Error offering ride.Check whether you have an approved vehicle and try again.",
+            );
+          }
+        });
+    </script>
+  </body>
 </html>

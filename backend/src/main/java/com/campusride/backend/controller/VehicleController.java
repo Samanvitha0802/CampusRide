@@ -29,6 +29,7 @@ public class VehicleController {
             @RequestParam MultipartFile license,
             @RequestParam MultipartFile rc
     ) throws IOException {
+    		
 
         Vehicle vehicle = new Vehicle();
         vehicle.setName(name);
@@ -38,7 +39,7 @@ public class VehicleController {
         vehicle.setVehicleModel(vehicleModel);
         vehicle.setVehicleNumber(vehicleNumber);
 
-        vehicleService.registerVehicle(vehicle, collegeId, license, rc);
+        vehicleService.registerVehicle(vehicle, collegeId, license, rc, email);
 
         return ResponseEntity.ok("Vehicle submitted for approval");
     }

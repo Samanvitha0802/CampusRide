@@ -18,42 +18,52 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
+    private final String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator;
 
     // Register vehicle with files
-    public Vehicle registerVehicle(Vehicle vehicle,
-                                   MultipartFile collegeId,
-                                   MultipartFile license,
-                                   MultipartFile rc) throws IOException {
+    private String saveFile(MultipartFile file, String folder) throws IOException {
 
-        File uploadFolder = new File(UPLOAD_DIR);
-        if (!uploadFolder.exists()) {
-            uploadFolder.mkdirs();
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String folderPath = uploadDir + folder + File.separator;
+
+        // Create folder if it doesn't exist
+        File directory = new File(folderPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
 
-        String collegeIdPath = saveFile(collegeId);
-        String licensePath = saveFile(license);
-        String rcPath = saveFile(rc);
+        String filePath = folderPath + fileName;
+        File destination = new File(filePath);
 
-        vehicle.setCollegeIdImage(collegeIdPath);
+        file.transferTo(destination);
+
+        return "uploads/" + folder + "/" + fileName;
+    }
+
+
+    public Vehicle registerVehicle(
+            Vehicle vehicle,
+            MultipartFile collegeId,
+            MultipartFile license,
+            MultipartFile rc,
+            String email) throws IOException {
+    	
+    		List<Vehicle> vehicles =
+                vehicleRepository.findByEmailAndStatus(email, "APPROVED");
+    		if(vehicles.size()>0) {
+    			throw new RuntimeException("You already have an approved vehicle.");
+    		}
+
+        String collegePath = saveFile(collegeId, "college");
+        String licensePath = saveFile(license, "license");
+        String rcPath = saveFile(rc, "rc");
+
+        vehicle.setCollegeIdImage(collegePath);
         vehicle.setLicenseImage(licensePath);
         vehicle.setRcImage(rcPath);
         vehicle.setStatus("PENDING");
 
         return vehicleRepository.save(vehicle);
-    }
-
-    private String saveFile(MultipartFile file) throws IOException {
-        if (file == null || file.isEmpty()) {
-            return null;
-        }
-
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String filePath = UPLOAD_DIR + fileName;
-
-        file.transferTo(new File(filePath));
-
-        return filePath;
     }
 
     public List<Vehicle> getPendingVehicles() {

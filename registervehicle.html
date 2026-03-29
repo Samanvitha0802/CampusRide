@@ -135,7 +135,7 @@ input::placeholder {
 }
 
 /* ===== BUTTON ===== */
-button {
+#submit-btn {
     grid-column: span 2;
     padding: 13px;
     background: linear-gradient(45deg, #60a5fa, #1e3a8a);
@@ -172,7 +172,6 @@ select option {
     <div class="logo">CampusRide</div>
     <ul>
         <li><a href="dashboard.html">Home</a></li>
-        <li><a href="#">My Trips</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li><button onclick="logout()">Logout</button></li>
     </ul>
@@ -207,7 +206,7 @@ select option {
         <input type="text" name="vehicleModel" placeholder="Vehicle Model" required>
         <input type="text" name="vehicleNumber" placeholder="Vehicle Number" required>
 
-        <button type="submit">Submit</button>
+        <button type="submit" id="submit-btn">Submit</button>
 
     </form>
 </div>
@@ -224,7 +223,9 @@ document.getElementById("vehicleForm").addEventListener("submit", async function
     });
 
     if(response.ok){
-        alert("Submitted!");
+        alert("Submitted for approval! " + response.statusText);
+    } else {
+        alert("Submission Failed!. Check for reason here: " + response.statusText);
     }
 });
 

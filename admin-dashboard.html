@@ -3,7 +3,57 @@
   <head>
     <title>Admin Dashboard</title>
   </head>
+  <style>
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background-color: #1e3a8a;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 80px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 15px;
+    }
+
+    .navbar ul li a.active {
+      border-bottom: 2px solid white;
+    }
+    
+    .navbar button {
+      background-color: white;
+      color: #1e3a8a;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
   <body>
+    <!-- ✅ NAVBAR -->
+    <header class="navbar">
+      <div class="logo">CampusRide</div>
+      <ul>
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><button onclick="logout()">Logout</button></li>
+      </ul>
+    </header>
     <h2>Pending Vehicle Requests</h2>
 
     <div id="vehicleList"></div>
@@ -30,16 +80,19 @@
     </div>
   </body>
   <script>
+    function logout() {
+      localStorage.clear();
+
+      window.location.href = "login.html";
+    }
     const role = localStorage.getItem("role");
 
     if (!role) {
       alert("Login required");
       window.location.href = "login.html";
-    }
-
-    if (role !== "ADMIN") {
+    } else if (role !== "ADMIN") {
       alert("Access denied");
-      window.location.href = "index.html";
+      window.location.href = "dashboard.html";
     }
 
     function openModal(src) {

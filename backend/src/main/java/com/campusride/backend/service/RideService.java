@@ -3,6 +3,7 @@ package com.campusride.backend.service;
 import com.campusride.backend.dto.RideRequestDTO;
 import com.campusride.backend.entity.Ride;
 import com.campusride.backend.entity.User;
+import com.campusride.backend.entity.Vehicle;
 import com.campusride.backend.repository.RideRepository;
 import com.campusride.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,18 @@ public class RideService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private VehicleService vehicleService;
 
     // Create Ride
     public Ride createRide(Ride ride) {
+    		// Check approved vehicle
+        Vehicle vehicle = vehicleService
+                .getApprovedVehicleByEmail(ride.getDriverEmail());
+
+        // Attach verified vehicle number
+        ride.setVehicleNumber(vehicle.getVehicleNumber());
         ride.setStatus("ACTIVE");
         return rideRepository.save(ride);
     }
