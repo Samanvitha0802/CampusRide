@@ -15,6 +15,7 @@ public class RideRequestDTO {
     private String status;
     private Long requestId;
     private String passengerEmail;
+    private String vehicleModel;
     // Empty constructor
     public RideRequestDTO() {
     }
@@ -78,4 +79,8 @@ public class RideRequestDTO {
     
     public String getPassengerEmail() { return passengerEmail; }
     public void setPassengerEmail(String passengerEmail) { this.passengerEmail = passengerEmail; }
+    
+    public String getVehicleModel() { return vehicleModel; }
+
+    public void setVehicleModel(String vehicleModel) { this.vehicleModel = vehicleModel; }
 }

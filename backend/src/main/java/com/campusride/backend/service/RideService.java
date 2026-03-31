@@ -54,7 +54,9 @@ public class RideService {
 
             String driverName = "";
             String driverMobile = "";
+            String vehicleModel = "";
 
+            // 👤 Get driver details
             if (ride.getDriverEmail() != null) {
                 User driver = userRepository
                         .findByEmail(ride.getDriverEmail())
@@ -64,6 +66,18 @@ public class RideService {
                     driverName = driver.getFullName();
                     driverMobile = driver.getPhone();
                 }
+            }
+
+            try {
+                Vehicle vehicle = vehicleService
+                        .getApprovedVehicleByEmail(ride.getDriverEmail());
+
+                if (vehicle != null) {
+                    vehicleModel = vehicle.getVehicleModel();
+                }
+
+            } catch (Exception e) {
+                vehicleModel = "Unknown";
             }
 
             RideRequestDTO dto = new RideRequestDTO(
@@ -78,6 +92,8 @@ public class RideService {
                     driverMobile,
                     ride.getStatus()
             );
+
+            dto.setVehicleModel(vehicleModel);
 
             list.add(dto);
         }
