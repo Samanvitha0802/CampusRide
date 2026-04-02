@@ -174,7 +174,7 @@
       // Load requests
       async function loadRequests() {
         const response = await fetch(
-          `http://localhost:8081/api/ride-request/driver?email=${email}`,
+          `https://campusride-backend-p321.onrender.com/api/ride-request/driver?email=${email}`,
         );
 
         const requests = await response.json();
@@ -219,7 +219,7 @@
 
       // Approve
       async function approve(id) {
-        await fetch(`http://localhost:8081/api/ride-request/${id}/approve`, {
+        await fetch(`https://campusride-backend-p321.onrender.com/api/ride-request/${id}/approve`, {
           method: "PUT",
         });
 
@@ -229,7 +229,7 @@
 
       // Reject
       async function reject(id) {
-        await fetch(`http://localhost:8081/api/ride-request/${id}/reject`, {
+        await fetch(`https://campusride-backend-p321.onrender.com/api/ride-request/${id}/reject`, {
           method: "PUT",
         });
 

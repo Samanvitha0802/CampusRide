@@ -114,7 +114,7 @@
 
     async function loadVehicles() {
       const response = await fetch(
-        `http://localhost:8081/api/admin/vehicles/pending?adminEmail=${adminEmail}`,
+        `https://campusride-backend-p321.onrender.com/api/admin/vehicles/pending?adminEmail=${adminEmail}`,
       );
 
       const vehicles = await response.json();
@@ -144,9 +144,9 @@
         <p><b>Number:</b> ${v.vehicleNumber}</p>
 
         <div style="display:flex; gap:10px; margin-top:10px;">
-            <img src="http://localhost:8081/${v.collegeIdImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
-            <img src="http://localhost:8081/${v.licenseImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
-            <img src="http://localhost:8081/${v.rcImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
+            <img src="https://campusride-backend-p321.onrender.com/${v.collegeIdImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
+            <img src="https://campusride-backend-p321.onrender.com/${v.licenseImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
+            <img src="https://campusride-backend-p321.onrender.com/${v.rcImage}" width="100" style="cursor:pointer; border-radius:6px;" onclick="openModal(this.src)">
         </div>
 
         <div style="margin-top:10px;">
@@ -167,7 +167,7 @@
 
     async function approve(id) {
       await fetch(
-        `http://localhost:8081/api/admin/vehicle/${id}/approve?adminEmail=${adminEmail}`,
+        `https://campusride-backend-p321.onrender.com/api/admin/vehicle/${id}/approve?adminEmail=${adminEmail}`,
         {
           method: "PUT",
         },
@@ -182,7 +182,7 @@
 
     async function reject(id) {
       await fetch(
-        `http://localhost:8081/api/admin/vehicle/${id}/reject?adminEmail=${adminEmail}`,
+        `https://campusride-backend-p321.onrender.com/api/admin/vehicle/${id}/reject?adminEmail=${adminEmail}`,
         {
           method: "PUT",
         },

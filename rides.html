@@ -184,7 +184,7 @@
 
       // Load Available Rides
       async function loadRides() {
-        const res = await fetch("http://localhost:8081/api/rides");
+        const res = await fetch("https://campusride-backend-p321.onrender.com/api/rides");
         const rides = await res.json();
         displayRides(rides);
       }
@@ -196,7 +196,7 @@
           .getElementById("destination")
           .value.toLowerCase();
 
-        const res = await fetch("http://localhost:8081/api/rides");
+        const res = await fetch("https://campusride-backend-p321.onrender.com/api/rides");
         const rides = await res.json();
 
         const filtered = rides.filter(
@@ -236,7 +236,7 @@
         const email = localStorage.getItem("email");
 
         const res = await fetch(
-          `http://localhost:8081/api/ride-request/request?rideId=${rideId}&email=${email}`,
+          `https://campusride-backend-p321.onrender.com/api/ride-request/request?rideId=${rideId}&email=${email}`,
           { method: "POST" },
         );
         if (!res.ok) {
@@ -256,7 +256,7 @@
         const email = localStorage.getItem("email");
 
         const res = await fetch(
-          `http://localhost:8081/api/ride-request/passenger?email=${email}`,
+          `https://campusride-backend-p321.onrender.com/api/ride-request/passenger?email=${email}`,
         );
 
         const requests = await res.json();

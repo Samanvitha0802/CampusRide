@@ -253,13 +253,20 @@
             password: document.getElementById("password").value,
           };
 
-          if(user.password !== document.getElementById("confirmPassword").value) {
+          if (user.password.length < 6) {
+            alert("Password must be at least 6 characters long!");
+            return;
+          }
+
+          if (
+            user.password !== document.getElementById("confirmPassword").value
+          ) {
             alert("Passwords do not match!");
             return;
           }
 
           const response = await fetch(
-            "http://localhost:8081/api/auth/register",
+            "https://campusride-backend-p321.onrender.com/api/auth/register",
             {
               method: "POST",
               headers: {

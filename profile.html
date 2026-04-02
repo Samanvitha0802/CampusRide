@@ -226,7 +226,7 @@
           return;
         }
 
-        fetch(`http://localhost:8081/api/dashboard/${email}`)
+        fetch(`https://campusride-backend-p321.onrender.com/api/dashboard/${email}`)
           .then((res) => res.json())
           .then((data) => {
             document.getElementById("name").innerText = data.name;

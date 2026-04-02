@@ -282,11 +282,11 @@
   </body>
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
-      const res = await fetch("http://localhost:8081/api/rides");
+      const res = await fetch("https://campusride-backend-p321.onrender.com/api/rides");
       document.getElementById("activerides").innerText = res.ok
         ? (await res.json()).length
         : "N/A";
-      const res2 = await fetch("http://localhost:8081/api/auth");
+      const res2 = await fetch("https://campusride-backend-p321.onrender.com/api/auth");
       document.getElementById("activeusers").innerText = res.ok
         ? (await res2.json())
         : "N/A";
